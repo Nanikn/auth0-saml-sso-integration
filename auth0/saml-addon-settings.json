@@ -1,0 +1,21 @@
+{
+  "audience": "urn:platform:sp",
+  "recipient": "http://localhost:5173/api/saml/acs",
+  "destination": "http://localhost:5173/api/saml/acs",
+  "mappings": {
+    "email": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+    "name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+  },
+  "nameIdentifierFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+  "nameIdentifierProbes": [
+    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+  ],
+  "passthroughClaimsWithNoMapping": false,
+  "signatureAlgorithm": "rsa-sha256",
+  "digestAlgorithm": "sha256",
+  "signResponse": false,
+  "logout": {
+    "callback": "http://localhost:5173/api/saml/slo",
+    "slo_enabled": false
+  }
+}
