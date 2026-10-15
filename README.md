@@ -4,6 +4,8 @@ Auth0 is the SAML identity provider. This repository is the service provider: a 
 
 The browser origin is `http://localhost:5173`. The API listens on port `4000`. Vite proxies `/api` to the API, so the session cookie, the ACS URL, and the UI share one origin.
 
+Flow diagrams for both logins and both logouts are in [ARCHITECTURE.md](ARCHITECTURE.md). The reasoning behind the checks and the session model is in [DECISIONS.md](DECISIONS.md).
+
 ## What you need to do
 
 You need a free Auth0 dev tenant and a fake test user. Do not use a production tenant or a real person's data. The app cannot create the tenant for you.
@@ -135,27 +137,7 @@ Dev tenant and test user for the review. The client secret is unused.
 
 ## Architecture
 
-```mermaid
-sequenceDiagram
-  participant Browser
-  participant SP as This app (SP)
-  participant IdP as Auth0 (IdP)
-
-  Note over Browser,IdP: SP-initiated login
-  Browser->>SP: GET /api/saml/login
-  SP->>Browser: Redirect with AuthnRequest
-  Browser->>IdP: Authenticate
-  IdP->>Browser: HTTP-POST SAMLResponse to /api/saml/acs
-  Browser->>SP: ACS
-  SP->>SP: Signature, audience, recipient, InResponseTo, assertion ID
-  SP->>Browser: Session cookie and redirect /home
-
-  Note over Browser,IdP: IdP-initiated login
-  Browser->>IdP: GET /samlp/{clientId} (no AuthnRequest)
-  IdP->>Browser: HTTP-POST unsolicited SAMLResponse
-  Browser->>SP: ACS
-  SP->>Browser: Session cookie and redirect /home
-```
+[ARCHITECTURE.md](ARCHITECTURE.md) is the flow document: component map, both login sequences, the ACS checks, and both logout sequences.
 
 | Piece | Role |
 | --- | --- |
@@ -202,5 +184,6 @@ backend/src/auth     session cookie and store
 backend/src/routes   current-user and demo links
 frontend             React demo of both flows
 auth0                JSON to paste into the SAML addon
+ARCHITECTURE.md      login and logout flows
 DECISIONS.md         assumptions, tradeoffs, logout, AI use
 ```
